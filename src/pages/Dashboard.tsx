@@ -1,4 +1,4 @@
-
+"use client"
 
 import type React from "react"
 
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import toast, { Toaster } from "react-hot-toast"
-import { motion, AnimatePresence, useMotionTemplate, useMotionValue} from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   Plus,
   LogOut,
@@ -47,23 +47,22 @@ const Dashboard = () => {
   const token = localStorage.getItem("token")
 
   // Mouse follower effect
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
+  // const mouseX = useMotionValue(0)
+  // const mouseY = useMotionValue(0)
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX)
-      mouseY.set(e.clientY)
-    }
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [mouseX, mouseY])
+  // useEffect(() => {
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     mouseX.set(e.clientX)
+  //     mouseY.set(e.clientY)
+  //   }
+  //   window.addEventListener("mousemove", handleMouseMove)
+  //   return () => window.removeEventListener("mousemove", handleMouseMove)
+  // }, [mouseX, mouseY])
 
   const fetchSavedContent = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/v1/content", {
         headers: { Authorization: `Bearer ${token}` },
-        
       })
       const data = await res.json()
       setSavedContent(data)
@@ -71,8 +70,6 @@ const Dashboard = () => {
       toast.error("Failed to fetch content")
     }
   }
-  console.log(username);
-  
 
   useEffect(() => {
     if (!token) {
@@ -97,6 +94,8 @@ const Dashboard = () => {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
+      console.log(username);
+      
       const res = await fetch("http://localhost:5000/api/v1/content", {
         method: "POST",
         headers: {
@@ -185,7 +184,7 @@ const Dashboard = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.05,
         delayChildren: 0.2,
       },
     },
@@ -198,27 +197,16 @@ const Dashboard = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 300,
-        damping: 24,
+        stiffness: 200,
+        damping: 20,
       },
     },
     hover: {
       y: -5,
-      scale: 1.02,
-      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       transition: {
         type: "spring",
-        stiffness: 400,
-        damping: 10,
-      },
-    },
-    tap: {
-      scale: 0.98,
-      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10,
+        stiffness: 300,
+        damping: 15,
       },
     },
   }
@@ -245,23 +233,18 @@ const Dashboard = () => {
   const modalVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.8,
-      y: 50,
+      y: 20,
     },
     visible: {
       opacity: 1,
-      scale: 1,
       y: 0,
       transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
+        duration: 0.3,
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.8,
-      y: 50,
+      y: 20,
       transition: {
         duration: 0.2,
       },
@@ -322,38 +305,50 @@ const Dashboard = () => {
     },
   }
 
+  // Custom cursor
+  // const cursorX = useTransform(mouseX, (value) => value - 16)
+  // const cursorY = useTransform(mouseY, (value) => value - 16)
+  // const cursorSize = useMotionValue(32)
+  // const cursorOpacity = useMotionValue(0)
 
+  // useEffect(() => {
+  //   const handleMouseEnter = () => {
+  //     cursorOpacity.set(0.2)
+  //   }
+  //   const handleMouseLeave = () => {
+  //     cursorOpacity.set(0)
+  //   }
+  //   document.addEventListener("mouseenter", handleMouseEnter)
+  //   document.addEventListener("mouseleave", handleMouseLeave)
+  //   return () => {
+  //     document.removeEventListener("mouseenter", handleMouseEnter)
+  //     document.removeEventListener("mouseleave", handleMouseLeave)
+  //   }
+  // }, [cursorOpacity])
 
   // Gradient background
-  // Gradient background with blue tones
-const gradientBg = useMotionTemplate`
-radial-gradient(
-  circle at ${mouseX}px ${mouseY}px,
-  rgba(50, 50, 70, 0.15) 0%,
-  rgba(10, 10, 20, 0.2) 40%,
-  rgba(0, 0, 0, 0.3) 80%
-),
-linear-gradient(
-  135deg, 
-  rgba(0, 0, 30, 1) 0%,   /* Deep blue color */
-  rgba(0, 0, 50, 1) 100%  /* Darker blue shade */
-)
-`;
-
+  const gradientBg = "linear-gradient(135deg, #0f172a 0%, #020617 100%)"
 
   return (
     <motion.div className="min-h-screen text-white relative overflow-hidden" style={{ background: gradientBg }}>
       {/* Custom cursor */}
-      <motion.div
+      {/* <motion.div
         className="fixed rounded-full pointer-events-none z-50 mix-blend-difference"
-        
-      />
+        style={{
+          x: cursorX,
+          y: cursorY,
+          width: cursorSize,
+          height: cursorSize,
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          opacity: cursorOpacity,
+        }}
+      /> */}
 
       {/* Animated background elements */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full bg-purple-500 opacity-10"
+          className="absolute rounded-full bg-blue-500 opacity-10"
           initial={{
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
@@ -416,7 +411,7 @@ linear-gradient(
         transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
       >
         <motion.h2
-          className="text-xl font-bold text-purple-300"
+          className="text-xl font-bold text-blue-300"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -426,7 +421,7 @@ linear-gradient(
         <div className="flex gap-2">
           <motion.button
             onClick={() => setIsAddOpen(true)}
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 px-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center text-sm"
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
@@ -436,7 +431,7 @@ linear-gradient(
           </motion.button>
           <motion.button
             onClick={handleLogout}
-            className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white py-2 px-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center text-sm"
+            className="bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center text-sm"
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
@@ -449,14 +444,14 @@ linear-gradient(
 
       {/* Sidebar for Desktop */}
       <motion.aside
-        className="w-64 bg-black bg-opacity-50 backdrop-filter backdrop-blur-md py-8 px-4 fixed top-0 left-0 h-full flex-col space-y-8 border-r border-gray-800 hidden sm:flex z-40"
+        className="w-64 bg-black bg-opacity-50 backdrop-filter backdrop-blur-md py-8 px-4 fixed top-0 left-0 h-full flex flex-col space-y-8 border-r border-gray-800 hidden sm:flex z-40"
         variants={sidebarVariants}
         initial="open"
         animate={sidebarOpen ? "open" : "closed"}
       >
         <div className="flex items-center justify-between">
           <motion.h2
-            className="text-xl font-bold text-purple-300"
+            className="text-xl font-bold text-blue-300"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -483,9 +478,7 @@ linear-gradient(
           <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Dashboard</p>
           <motion.div
             className="flex items-center space-x-2 text-gray-300 bg-gray-800 bg-opacity-50 p-2 rounded-md"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
+            whileHover={{ backgroundColor: "rgba(30, 58, 138, 0.3)" }}
           >
             <Database className="h-4 w-4" />
             <span>All Content</span>
@@ -502,20 +495,18 @@ linear-gradient(
           <div className="flex space-x-2">
             <motion.button
               onClick={() => setViewMode("grid")}
-              className={`flex items-center space-x-2 p-2 rounded-md ${viewMode === "grid" ? "bg-purple-900 text-white" : "text-gray-400 hover:text-white"}`}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
+              className={`flex items-center space-x-2 p-2 rounded-md ${viewMode === "grid" ? "bg-blue-900 text-white" : "text-gray-400 hover:text-white"}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Grid className="h-4 w-4" />
               <span>Grid</span>
             </motion.button>
             <motion.button
               onClick={() => setViewMode("list")}
-              className={`flex items-center space-x-2 p-2 rounded-md ${viewMode === "list" ? "bg-purple-900 text-white" : "text-gray-400 hover:text-white"}`}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
+              className={`flex items-center space-x-2 p-2 rounded-md ${viewMode === "list" ? "bg-blue-900 text-white" : "text-gray-400 hover:text-white"}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <List className="h-4 w-4" />
               <span>List</span>
@@ -525,7 +516,7 @@ linear-gradient(
 
         <motion.button
           onClick={() => setIsAddOpen(true)}
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
+          className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
           variants={buttonVariants}
           whileHover="hover"
           whileTap="tap"
@@ -539,7 +530,7 @@ linear-gradient(
 
         <motion.button
           onClick={handleLogout}
-          className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center mt-auto"
+          className="bg-red-600 hover:bg-red-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center mt-auto"
           variants={buttonVariants}
           whileHover="hover"
           whileTap="tap"
@@ -587,11 +578,10 @@ linear-gradient(
             transition={{ delay: 0.5 }}
           >
             <motion.h1
-              className="text-3xl font-bold mb-4 md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-pink-500 to-red-500
-"
+              className="text-3xl font-bold mb-4 md:mb-0 text-blue-400"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 0.3 }}
             >
               Content Vault
             </motion.h1>
@@ -603,7 +593,7 @@ linear-gradient(
               transition={{ delay: 0.7 }}
             >
               <Search
-                className={`absolute mt-1.5 left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200 ${isSearchFocused ? "text-purple-400" : "text-gray-400"}`}
+                className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200 ${isSearchFocused ? "text-blue-400" : "text-gray-400"}`}
               />
               <motion.input
                 type="text"
@@ -612,9 +602,7 @@ linear-gradient(
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
-                className="w-full mt-3 pl-10 pr-4 py-2 bg-black bg-opacity-50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                initial={{ width: "100%" }}
-                whileFocus={{ width: "110%", scale: 1.02 }}
+                className="w-full pl-10 pr-4 py-2 bg-black bg-opacity-50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
             </motion.div>
           </motion.div>
@@ -639,7 +627,7 @@ linear-gradient(
                 </motion.div>
                 <motion.button
                   onClick={() => setIsAddOpen(true)}
-                  className="mt-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
+                  className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
                   variants={buttonVariants}
                   whileHover="hover"
                   whileTap="tap"
@@ -673,23 +661,23 @@ linear-gradient(
                   animate="visible"
                   exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
                   className={`
-                    relative overflow-hidden
-                    ${
-                      viewMode === "grid"
-                        ? "bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-xl border border-gray-800 p-5 hover:border-purple-500/30 transition-all duration-300"
-                        : "bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-xl border border-gray-800 p-4 hover:border-purple-500/30 transition-all duration-300"
-                    }
-                  `}
+  relative overflow-hidden
+  ${
+    viewMode === "grid"
+      ? "bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-800 p-5 hover:border-blue-500/30 transition-all duration-200"
+      : "bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg border border-gray-800 p-4 hover:border-blue-500/30 transition-all duration-200"
+  }
+`}
                   style={{
                     transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
                   }}
                 >
                   {/* Glow effect on hover */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 transition-opacity duration-300 rounded-lg"
+                  {/* <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-teal-600/20 opacity-0 transition-opacity duration-300 rounded-lg"
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
-                  />
+                  /> */}
 
                   <motion.h3
                     className="text-lg font-semibold mb-2 text-white"
@@ -699,23 +687,22 @@ linear-gradient(
                   >
                     {item.title}
                   </motion.h3>
-                  
 
-                  <a
+                  <motion.a
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 text-sm break-words hover:underline mb-2 flex items-center"
-                    
-                   
-                    
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 + index * 0.05 }}
                   >
                     <LinkIcon className="h-3 w-3 mr-1 flex-shrink-0" />
                     <span className="truncate">{item.link}</span>
-                  </a>
+                  </motion.a>
 
                   <motion.p
-                    className="text-sm text-purple-300 mb-3 flex items-center"
+                    className="text-sm text-blue-300 mb-3 flex items-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 + index * 0.05 }}
@@ -733,13 +720,11 @@ linear-gradient(
                     {item.tags.map((tag, idx) => (
                       <motion.span
                         key={idx}
-                        className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs rounded-full px-2 py-1 font-medium"
-                        variants={tagVariants}
-                        initial="initial"
-                        animate="animate"
-                        whileHover="hover"
-                        whileTap="tap"
-                        transition={{ delay: 0.1 * idx }}
+                        {...tagVariants}
+                        className="inline-block bg-blue-600 text-white text-xs rounded-full px-2 py-1 font-medium"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 * idx, duration: 0.2 }}
                       >
                         #{tag}
                       </motion.span>
@@ -837,7 +822,7 @@ linear-gradient(
                       placeholder="Enter title"
                       value={newContent.title}
                       onChange={(e) => setNewContent({ ...newContent, title: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   </motion.div>
@@ -852,7 +837,7 @@ linear-gradient(
                       placeholder="Enter type"
                       value={newContent.type}
                       onChange={(e) => setNewContent({ ...newContent, type: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   </motion.div>
@@ -867,7 +852,7 @@ linear-gradient(
                       placeholder="Enter link"
                       value={newContent.link}
                       onChange={(e) => setNewContent({ ...newContent, link: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   </motion.div>
@@ -882,7 +867,7 @@ linear-gradient(
                       placeholder="Enter tags"
                       value={newContent.tags}
                       onChange={(e) => setNewContent({ ...newContent, tags: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </motion.div>
                   <motion.div
@@ -903,7 +888,7 @@ linear-gradient(
                     </motion.button>
                     <motion.button
                       type="submit"
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out"
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
@@ -978,7 +963,7 @@ linear-gradient(
                       type="text"
                       value={editContent.title}
                       onChange={(e) => setEditContent({ ...editContent, title: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </motion.div>
                   <motion.div
@@ -991,7 +976,7 @@ linear-gradient(
                       type="text"
                       value={editContent.type}
                       onChange={(e) => setEditContent({ ...editContent, type: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </motion.div>
                   <motion.div
@@ -1004,7 +989,7 @@ linear-gradient(
                       type="text"
                       value={editContent.link}
                       onChange={(e) => setEditContent({ ...editContent, link: e.target.value })}
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </motion.div>
                   <motion.div
@@ -1019,7 +1004,7 @@ linear-gradient(
                       onChange={(e) =>
                         setEditContent({ ...editContent, tags: e.target.value.split(",").map((tag) => tag.trim()) })
                       }
-                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </motion.div>
                   <motion.div
@@ -1040,7 +1025,7 @@ linear-gradient(
                     </motion.button>
                     <motion.button
                       type="submit"
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out"
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
