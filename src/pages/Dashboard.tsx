@@ -56,7 +56,7 @@ const Dashboard = () => {
 
   const fetchSavedContent = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/v1/content", {
+      const res = await fetch("https://metabackf.onrender.com/api/v1/content", {
         headers: { Authorization: `Bearer ${token}` },
       })
       const data = await res.json()
@@ -98,7 +98,7 @@ const Dashboard = () => {
     try {
       console.log(username);
       
-      const res = await fetch("http://localhost:5000/api/v1/content", {
+      const res = await fetch("https://metabackf.onrender.com/api/v1/content", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ const Dashboard = () => {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this content?")) return
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/content/${id}`, {
+      const res = await fetch(`https://metabackf.onrender.com/api/v1/content/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -150,7 +150,7 @@ const Dashboard = () => {
   const handleEditSave = async () => {
     if (!editContent) return
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/content/${editContent._id}`, {
+      const res = await fetch(`https://metabackf.onrender.com/api/v1/content/${editContent._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
