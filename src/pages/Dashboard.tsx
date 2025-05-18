@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import toast, { Toaster } from "react-hot-toast"
 import { motion, AnimatePresence } from "framer-motion"
+
 import {
   Plus,
   LogOut,
   Edit2,
   Trash2,
   X,
+User,
+  Copy,
   Save,
   LinkIcon,
   Type,
@@ -30,14 +33,17 @@ interface Content {
   link: string
   title: string
   tags: string[]
+  sharedUrl:string
 }
 
 const Dashboard = () => {
   const [username, setUsername] = useState("")
+  const [isSharingEnabled, setIsSharingEnabled] = useState(false);
   const [savedContent, setSavedContent] = useState<Content[]>([])
   const [newContent, setNewContent] = useState({ title: "", type: "", link: "", tags: "" })
   const [editContent, setEditContent] = useState<Content | null>(null)
   const [isAddOpen, setIsAddOpen] = useState(false)
+
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -46,18 +52,7 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const token = localStorage.getItem("token")
 
-  // Mouse follower effect
-  // const mouseX = useMotionValue(0)
-  // const mouseY = useMotionValue(0)
 
-  // useEffect(() => {
-  //   const handleMouseMove = (e: MouseEvent) => {
-  //     mouseX.set(e.clientX)
-  //     mouseY.set(e.clientY)
-  //   }
-  //   window.addEventListener("mousemove", handleMouseMove)
-  //   return () => window.removeEventListener("mousemove", handleMouseMove)
-  // }, [mouseX, mouseY])
 
   const fetchSavedContent = async () => {
     try {
@@ -66,6 +61,8 @@ const Dashboard = () => {
       })
       const data = await res.json()
       setSavedContent(data)
+      
+      
     } catch (err) {
       toast.error("Failed to fetch content")
     }
@@ -80,7 +77,12 @@ const Dashboard = () => {
     const verifyTokenAndFetch = async () => {
       try {
         const decoded: any = jwtDecode(token)
+               
+        
         setUsername(decoded.username)
+        setIsSharingEnabled(decoded.isSharingEnabled); 
+        console.log({isSharingEnabled})
+       
         await fetchSavedContent()
       } catch (err) {
         toast.error("Invalid token")
@@ -119,6 +121,14 @@ const Dashboard = () => {
       toast.error("Add failed")
     }
   }
+
+
+
+
+  const goToProfile = () => {
+    navigate("/profile/:id")
+  }
+
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this content?")) return
@@ -164,6 +174,25 @@ const Dashboard = () => {
       toast.error("Update failed")
     }
   }
+
+  // const handleLinkClick = (event:React.MouseEvent<HTMLAnchorElement>, linkType:string) => {
+  //   // Check if it's the X link and apply Option 3 behavior
+  //   if (linkType === "X") {
+  //     event.preventDefault(); // Prevent default link behavior for X link
+  //     console.log("X link clicked, applying Option 3 behavior");
+  //     // Insert your Option 3 code here (for example, change state, redirect, etc.)
+      
+  //   }
+  //   // For other links, normal behavior happens automatically
+  // };
+  
+
+
+
+
+
+
+
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -430,6 +459,20 @@ const Dashboard = () => {
             Add
           </motion.button>
           <motion.button
+          onClick={() => goToProfile()}
+          className="bg-blue-600 hover:bg-blue-700 text-white w-full  rounded-md transition duration-150 ease-in-out flex items-center justify-center"
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <User className="w-full" />
+     
+  
+        </motion.button>
+          <motion.button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center text-sm"
             variants={buttonVariants}
@@ -444,7 +487,7 @@ const Dashboard = () => {
 
       {/* Sidebar for Desktop */}
       <motion.aside
-        className="w-64 bg-black bg-opacity-50 backdrop-filter backdrop-blur-md py-8 px-4 fixed top-0 left-0 h-full flex flex-col space-y-8 border-r border-gray-800 hidden sm:flex z-40"
+        className="w-64 bg-black bg-opacity-50 backdrop-filter backdrop-blur-md py-8 px-4 fixed top-0 left-0 h-full  flex-col space-y-8 border-r border-gray-800 hidden sm:flex z-40"
         variants={sidebarVariants}
         initial="open"
         animate={sidebarOpen ? "open" : "closed"}
@@ -526,6 +569,20 @@ const Dashboard = () => {
         >
           <Plus className="h-5 w-5 mr-2" />
           Add Content
+        </motion.button>
+        <motion.button
+          onClick={() => goToProfile()}
+          className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <User className="h-5 w-5 mr-2" />
+     Profile
+  
         </motion.button>
 
         <motion.button
@@ -635,6 +692,20 @@ const Dashboard = () => {
                   <Plus className="h-5 w-5 mr-2" />
                   Add Content
                 </motion.button>
+                <motion.button
+          onClick={() => goToProfile()}
+          className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md transition duration-150 ease-in-out flex items-center justify-center"
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <User className="h-5 w-5 mr-2" />
+     Profile
+  
+        </motion.button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -686,20 +757,21 @@ const Dashboard = () => {
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
                     {item.title}
+                    
                   </motion.h3>
 
-                  <motion.a
+                  <a
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 text-sm break-words hover:underline mb-2 flex items-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 + index * 0.05 }}
+                  
+                    className="  z-10 text-blue-400 text-sm break-words hover:underline mb-2 flex items-center"
+                   
+                   
                   >
                     <LinkIcon className="h-3 w-3 mr-1 flex-shrink-0" />
-                    <span className="truncate">{item.link}</span>
-                  </motion.a>
+                    <span className="truncate">Link to {item.type}</span>
+                  </a>
 
                   <motion.p
                     className="text-sm text-blue-300 mb-3 flex items-center"
@@ -729,6 +801,23 @@ const Dashboard = () => {
                         #{tag}
                       </motion.span>
                     ))}
+
+<motion.button
+    onClick={() => {
+      navigator.clipboard.writeText(item.sharedUrl || item.link);
+      toast.success("Link copied!");
+      // alert("Link copied!");
+    }}
+    className="inline-block bg-transparent  text-xs rounded-full font-medium cursor-pointer"
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ delay: 0.2, duration: 0.2 }}
+  >
+  <Copy/>
+  </motion.button>
+
+  
+
                   </motion.div>
 
                   <motion.div

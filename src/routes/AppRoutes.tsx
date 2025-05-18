@@ -6,6 +6,7 @@ import SignUp from '@/pages/SignUp';
 import Dashboard from '@/pages/Dashboard';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Mediator from '@/pages/Mediator';
+import Profile from '@/pages/Profile';
 
 export const AppRoutes = () => {
   return (
@@ -84,6 +85,25 @@ export const AppRoutes = () => {
               <Dashboard />
             </motion.div>
           </ProtectedRoute>
+
+          
+        }
+      />
+      <Route
+        path='/profile/:id'
+        element={
+          <ProtectedRoute>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+            <Profile/>
+            </motion.div>
+          </ProtectedRoute>
+
+          
         }
       />
     </Routes>
