@@ -63,6 +63,7 @@ const SignIn = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
+                  name="password"
                 className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
