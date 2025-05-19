@@ -51,6 +51,7 @@ const SignIn = () => {
             <label className="block mb-1 text-sm text-gray-300">Username</label>
             <input
               type="text"
+                autoComplete="username"
               className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
