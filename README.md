@@ -1,54 +1,89 @@
-# React + TypeScript + Vite
+# SecondBrain Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The **SecondBrain App** is a personal knowledge management system that allows users to collect, organize, and share content from various sources. This is the frontend built with **React (Vite)**, **TypeScript**, **Tailwind CSS**, and **Material UI**.
 
-Currently, two official plugins are available:
+## 🚀 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+SecondBrain helps users curate and store tweets, YouTube videos, articles, links, and personal notes. The frontend provides a seamless UI for content management, tagging, searching, and sharing public read-only content pages.
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🔐 User authentication (Sign up / Sign in)
+- 📥 Save tweets, YouTube videos, links, and notes
+- 🏷️ Tag content for better organization
+- 🔍 Search content by keywords or tags
+- 🧑‍💼 Personalized dashboard view
+- 🔗 Share public read-only versions of saved content
+- 💻 Fully responsive UI with Tailwind and MUI components
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠 Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **React (Vite)**
+- **TypeScript**
+- **Tailwind CSS**
+- **Material UI (MUI)**
+- **Axios**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Installation and Setup Instructions
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/yourusername/secondbrain-frontend.git
+cd secondbrain-frontend
+Install dependencies
+
+bash
+Copy
+Edit
+npm install
+# or
+yarn install
+Run the development server
+
+bash
+Copy
+Edit
+npm run dev
+# or
+yarn dev
+Update the environment variables
+
+Create a .env file in the root directory and add:
+
+env
+Copy
+Edit
+VITE_API_URL=http://localhost:5000/api
+📁 Folder Structure
+arduino
+Copy
+Edit
+secondbrain-frontend/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── services/       # Axios API calls
+│   ├── types/
+│   ├── utils/
+│   ├── App.tsx
+│   └── main.tsx
+├── .env
+├── index.html
+├── tailwind.config.js
+└── vite.config.ts
+
+
+📜 Available Scripts
+npm run dev – Start the development server
+
+npm run build – Build the production version
+
+npm run preview – Preview the production build
+
+🤝 Contribution Guidelines (optional)
+We welcome contributions! Please fork the repo, create a feature branch, and submit a pull request with detailed information.
+
+
