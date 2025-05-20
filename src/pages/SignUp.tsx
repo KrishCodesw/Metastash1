@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +17,7 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       toast.error('All fields are required.');
       return;
     }
@@ -28,10 +29,14 @@ const SignUp = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post('https://metabackf.onrender.com/api/v1/auth/signup', {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        'https://metabackf.onrender.com/api/v1/auth/signup',
+        {
+          name,
+          email,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         toast.success('Signup successful! Redirecting to Sign In...');
@@ -56,13 +61,24 @@ const SignUp = () => {
         <h2 className="text-3xl font-bold text-center mb-6">Create your account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block mb-1 text-sm text-gray-300">Username</label>
+            <label className="block mb-1 text-sm text-gray-300">Name</label>
             <input
               type="text"
-              autoComplete='username'
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm text-gray-300">Email</label>
+            <input
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
@@ -71,10 +87,10 @@ const SignUp = () => {
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
-                autoComplete='new-password'
-                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="button"
@@ -91,10 +107,10 @@ const SignUp = () => {
             <div className="relative">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
-                autoComplete='new-password'
-                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="button"
