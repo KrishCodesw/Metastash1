@@ -32,7 +32,7 @@ const SignUp = () => {
       const response = await axios.post(
         'https://metabackf.onrender.com/api/v1/auth/signup',
         {
-          name,
+          username,
           email,
           password,
         }
