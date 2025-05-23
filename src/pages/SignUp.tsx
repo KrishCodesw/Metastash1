@@ -1,11 +1,10 @@
-Set
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +17,7 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       toast.error('All fields are required.');
       return;
     }
@@ -33,7 +32,7 @@ const SignUp = () => {
       const response = await axios.post(
         'https://metabackf.onrender.com/api/v1/auth/signup',
         {
-          username,
+          name,
           email,
           password,
         }
@@ -65,9 +64,9 @@ const SignUp = () => {
             <label className="block mb-1 text-sm text-gray-300">Name</label>
             <input
               type="text"
-              autoComplete="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
