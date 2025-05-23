@@ -1,3 +1,7 @@
+Fset
+  
+
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -66,7 +70,7 @@ const SignUp = () => {
               type="text"
               autoComplete="username"
               value={username}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setuserName(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
