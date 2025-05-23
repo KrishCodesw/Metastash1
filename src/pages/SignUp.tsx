@@ -1,14 +1,10 @@
-Fset
-  
-
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-  const [username, setuserName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,7 +17,7 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username  || !email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       toast.error('All fields are required.');
       return;
     }
@@ -70,7 +66,7 @@ const SignUp = () => {
               type="text"
               autoComplete="username"
               value={username}
-              onChange={(e) => setuserName(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
